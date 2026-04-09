@@ -43,7 +43,47 @@ NetGuard is a full-stack network security monitoring system that automatically d
 - 2x Cisco Switches
 - 1x VyOS Firewall
 
+## 🏗️ Lab Setup & Prerequisites
+
+To run this demonstration, you need a virtualized network environment.
+
+### 💿 Download Requirements
+* **GNS3 Network Emulator:** [Download GNS3 (v3.0+)](https://www.gns3.com/software/download)
+* **Ubuntu (Control Node):** [Download Ubuntu Server 24.04 LTS](https://ubuntu.com/download/server) (Used to host the Flask app and ML engine)
+* **Cisco IOS Images:** You will need your own `c7200` or `3725` binary images (due to licensing) to import into GNS3.
+
+### 🛠️ GNS3 Lab Creation
+1.  **Import Devices:** Add your Cisco IOS images and a VyOS appliance to the GNS3 marketplace.
+2.  **Topology:** Connect 4x Cisco Routers and 1x VyOS Firewall as defined in your project topology.
+3.  **Connectivity:** Connect your Ubuntu Control Node to the same management cloud/switch in GNS3 so it can reach the router IPs (e.g., `10.10.4.2`).
+
+### 🔑 Basic Device Configuration (Cisco)
+To allow NetGuard to audit and remediate your lab routers, they **must** have SSH and SNMP enabled:
+```bash
+conf t
+hostname R4
+ip domain-name lab.local
+crypto key generate rsa modulus 2048
+username admin privilege 15 password cisco
+line vty 0 4
+  transport input ssh
+  login local
+exit
+# Enable SNMP for monitoring
+snmp-server community public RO
+```
+
 ---
+
+### 3. Quick Download Summary Table
+| Component | Official Link | Purpose |
+| :--- | :--- | :--- |
+| **GNS3** | [gns3.com/software](https://www.gns3.com/software/download) | Network Emulation |
+| **Ubuntu** | [ubuntu.com/download](https://ubuntu.com/download) | Hosting Backend/ML |
+| **VyOS** | [vyos.io/rolling-release](https://vyos.io/rolling-release) | Open-source Firewall |
+
+**Network Automation Framework**.
+
 
 ## Installation
 
